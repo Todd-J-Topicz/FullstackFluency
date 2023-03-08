@@ -1,0 +1,20 @@
+{
+  "name": "fullstackfluency",
+  "version": "1.0.0",
+  "description": "FullStack App ",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "run": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Todd-J-Topicz/FullstackFluency.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Todd-J-Topicz/FullstackFluency/issues"
+  },
+  "homepage": "https://github.com/Todd-J-Topicz/FullstackFluency#readme"
+}
