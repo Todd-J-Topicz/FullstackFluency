@@ -15,9 +15,116 @@ app.use(cors());
 const dbConn = require('./dbConn');
 const pool = dbConn.getPool();
 
-// app.gets
-// app.post
-// app.patch
-// app.delete
+app.get('/api/userbase', (req, res, next) => {
+    console.log('Made it inside .get');
+    pool.query('SELECT * FROM userbase', (err, result) => {
+        if (err){
+            console.log("Error from app.get")
+            return next();
+        } else {
+            const data = result.rows;
+            console.log("data from .get", data);
+            response.status(200).send(data);
+        }
+    })
+})
 
-app.use(function(err, ))
+app.get('/api/userbase/:id', (req, res, next) => {
+    const id = Number.parseInt(req.params.id);
+
+    pool.query(`SELECT * FROM userbase WHERE id=$1`, [id], (err, result) => {
+        if (err){
+            return next();
+        }
+        const singleUser = result.rows;
+        console.log("individual user", singleUser)
+        res.status(200).send(singleUser);
+    })
+})
+
+// ERROR CATCHING:
+app.get('/api/:word', (req, res) =>{
+    const word = req.params.word;
+    res.status(404).send(`NOT FOUND! - 404 Error - /${word}/ does not exist`)
+})
+
+app.post('/api/userbase', (req, res, next) => {
+    const firstName = req.body.firstName;
+    const lastName = req.body.lastName;
+    const userName = req.body.userName;
+    const password = req.body.password;
+    const email = req.body.email;
+
+    if (!firstName || !lastName || !userName || !password || !email){
+        return res.status(400).send('Error in post data, please resubmit information')
+    }
+
+    pool.query('INSERT INTO userbase (firstName, lastName, userName, password, email) VALUES ($1, $2, $3, $4, $5) RETURNING *', [firstName, lastName, userName, password, email], (err, result) => {
+        if (err){
+            return next();
+        }
+        let userInfo = ressult.rows[0];
+        res.send(userInfo);
+    })
+})
+
+app.patch('/api/userbase/:id', (req, res, next) => {
+    const id = Number.parseInt(req.params.id);
+    const firstName = req.body.firstName;
+    const lastName = req.body.lastName;
+    const userName = req.body.userName;
+    const password = req.body.password;
+    const email = req.body.email;
+
+    pool.query('SELECT * FROM userbase WHERE id=$1', [id], (err, result, next) =>{
+        if (err){
+            return next();
+        }
+
+        let userInfo = result.rows[0];
+
+        if (!userInfo){
+            res.send('No user detected in database')
+        }
+
+        const updatedFirstName = firstName || userbase.firstName;
+        const updatedLastName = lastName || userbase.lastName;
+        const updatedUserName = userName || userbase.userName;
+        const updatedPassword = password || userbase.password;
+        const updatedEmail = email || userbase.email;
+
+        pool.query('UPDATE userbase SET firstName=$1, lastName=$2, userName=$3, password=$4, email=$5 WHERE id=$6 RETURNING *', [updatedFirstName, updatedLastName, updatedUserName, updatedPassword, updatedEmail, id], (err, result) => {
+            if (err){
+                res.send('There was an error updating the database')
+            }
+        })
+    })
+})
+
+app.delete('/api/userbase/:id', (req, res, next) => {
+    pool.query('SELECT * FROM userbase RETURNING*',);
+    console.log('query for DELETE worked, userbase is available');
+    const id = Number.parseInt(req.params.id);
+
+    pool.query('DELETE FROM userbase WHERE id=$1 RETURNING*', [id], (err, data) =>{
+        if (err){
+            res.status(404).send('There was an error with you SQL query for DELETION')
+        }
+        const deletedUser = data.rows[0];
+
+        if (deletedUser){
+            res.send(deletedUser);
+        } else {
+            res.send('This user ID has not been deleted.')
+        }
+    })
+})
+
+app.use((err, req, res, next) => {
+    console.log("Inside middleware error handeling")
+    res.status(404).send("ERROR 404 - PROBLEMS EXIST")
+})
+
+app.listen(port, () => {
+    console.log(`Service is running, listening on ${port}`)
+})
