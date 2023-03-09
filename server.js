@@ -49,9 +49,9 @@ app.get('/api/:word', (req, res) =>{
 })
 
 app.post('/api/userbase', (req, res, next) => {
-    const firstName = req.body.firstName;
-    const lastName = req.body.lastName;
-    const userName = req.body.userName;
+    const firstName = req.body.firstname;
+    const lastName = req.body.lastname;
+    const userName = req.body.username;
     const password = req.body.password;
     const email = req.body.email;
 
@@ -70,9 +70,9 @@ app.post('/api/userbase', (req, res, next) => {
 
 app.patch('/api/userbase/:id', (req, res, next) => {
     const id = Number.parseInt(req.params.id);
-    const firstName = req.body.firstName;
-    const lastName = req.body.lastName;
-    const userName = req.body.userName;
+    const firstName = req.body.firstname;
+    const lastName = req.body.lastname;
+    const userName = req.body.username;
     const password = req.body.password;
     const email = req.body.email;
 
@@ -97,6 +97,7 @@ app.patch('/api/userbase/:id', (req, res, next) => {
             if (err){
                 res.send('There was an error updating the database')
             }
+            res.status(200).send("Data Updated")
         })
     })
 })
