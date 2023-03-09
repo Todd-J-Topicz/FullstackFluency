@@ -59,7 +59,7 @@ app.post('/api/userbase', (req, res, next) => {
         return res.status(400).send('Error in post data, please resubmit information')
     }
 
-    pool.query('INSERT INTO userbase (firstName, lastName, userName, password, email) VALUES ($1, $2, $3, $4, $5) RETURNING *', [firstName, lastName, userName, password, email], (err, result) => {
+    pool.query('INSERT INTO userbase (firstname, lastname, username, password, email) VALUES ($1, $2, $3, $4, $5) RETURNING *', [firstName, lastName, userName, password, email], (err, result) => {
         if (err){
             return next();
         }
@@ -93,7 +93,7 @@ app.patch('/api/userbase/:id', (req, res, next) => {
         const updatedPassword = password || userInfo.password;
         const updatedEmail = email || userInfo.email;
 
-        pool.query('UPDATE userbase SET firstName=$1, lastName=$2, userName=$3, password=$4, email=$5 WHERE id=$6 RETURNING *', [updatedFirstName, updatedLastName, updatedUserName, updatedPassword, updatedEmail, id], (err, result) => {
+        pool.query('UPDATE userbase SET firstname=$1, lastname=$2, username=$3, password=$4, email=$5 WHERE id=$6 RETURNING *', [updatedFirstName, updatedLastName, updatedUserName, updatedPassword, updatedEmail, id], (err, result) => {
             if (err){
                 res.send('There was an error updating the database')
             }

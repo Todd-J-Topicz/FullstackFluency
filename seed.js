@@ -11,7 +11,7 @@ function runSeeder(pool, callback){
             return done();
         }
         
-        pool.query(`INSERT INTO userbase (firstName, lastName, userName, password, email) VALUES
+        pool.query(`INSERT INTO userbase (firstname, lastname, username, password, email) VALUES
             ('John', 'Doe', 'JDoe', '12ab34cd56ef', 'JohnDoe@aol.com'),
             ('Jane', 'Doe', 'JaneD', '98zy76xw54', 'JaneDoe@hotmail.com'),
             ('Maria', 'Lawson', 'MLaw', 'Orange&Apple', 'MariaLawson@gmail.com')`,
