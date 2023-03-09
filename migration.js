@@ -14,7 +14,7 @@ function runMigrations(pool, callback){
             if (err){
                 console.log(err);
             } else{
-                pool.query(`CREATE TABLE  (id SERIAL PRIMARY KEY, firstName VARCHAR (100), lastName VARCHAR (100), userName VARCHAR (100), password VARCHAR (100), email VARCHAR (100))`, (err) => {
+                pool.query(`CREATE TABLE userbase (id SERIAL PRIMARY KEY, firstName VARCHAR (100), lastName VARCHAR (100), userName VARCHAR (100), password VARCHAR (100), email VARCHAR (100))`, (err) => {
                         if (err){
                             console.log('CREATE TABLE FAILED');
                             console.log(err);

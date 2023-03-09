@@ -24,7 +24,7 @@ app.get('/api/userbase', (req, res, next) => {
         } else {
             const data = result.rows;
             console.log("data from .get", data);
-            response.status(200).send(data);
+            res.status(200).send(data);
         }
     })
 })
@@ -63,7 +63,7 @@ app.post('/api/userbase', (req, res, next) => {
         if (err){
             return next();
         }
-        let userInfo = ressult.rows[0];
+        let userInfo = result.rows[0];
         res.send(userInfo);
     })
 })
@@ -87,11 +87,11 @@ app.patch('/api/userbase/:id', (req, res, next) => {
             res.send('No user detected in database')
         }
 
-        const updatedFirstName = firstName || userbase.firstName;
-        const updatedLastName = lastName || userbase.lastName;
-        const updatedUserName = userName || userbase.userName;
-        const updatedPassword = password || userbase.password;
-        const updatedEmail = email || userbase.email;
+        const updatedFirstName = firstName || userInfo.firstName;
+        const updatedLastName = lastName || userInfo.lastName;
+        const updatedUserName = userName || userInfo.userName;
+        const updatedPassword = password || userInfo.password;
+        const updatedEmail = email || userInfo.email;
 
         pool.query('UPDATE userbase SET firstName=$1, lastName=$2, userName=$3, password=$4, email=$5 WHERE id=$6 RETURNING *', [updatedFirstName, updatedLastName, updatedUserName, updatedPassword, updatedEmail, id], (err, result) => {
             if (err){
@@ -102,7 +102,6 @@ app.patch('/api/userbase/:id', (req, res, next) => {
 })
 
 app.delete('/api/userbase/:id', (req, res, next) => {
-    pool.query('SELECT * FROM userbase RETURNING*',);
     console.log('query for DELETE worked, userbase is available');
     const id = Number.parseInt(req.params.id);
 
